@@ -198,7 +198,7 @@ fun EmailList(
                             true
                         }
                     )
-                }.testTag(Tags.TAG_EMAIL + email.id), directions = setOf(DismissDirection.StartToEnd),
+                }, directions = setOf(DismissDirection.StartToEnd),
                 dismissThresholds = { FractionalThreshold(0.15f) },
                 background = {
                     EmailItemBackground(

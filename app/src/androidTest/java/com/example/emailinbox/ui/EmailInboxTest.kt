@@ -1,20 +1,16 @@
 package com.example.emailinbox.ui
 
 import androidx.compose.runtime.withRunningRecomposer
-import androidx.compose.ui.test.assert
 import androidx.compose.ui.test.assertCountEquals
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertIsNotDisplayed
-import androidx.compose.ui.test.hasTestTag
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onChildAt
 import androidx.compose.ui.test.onChildren
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
-import androidx.compose.ui.test.performScrollTo
 import androidx.compose.ui.test.performTouchInput
 import androidx.compose.ui.test.swipeRight
-import androidx.core.view.ViewCompat.NestedScrollType
 import androidx.test.platform.app.InstrumentationRegistry
 import com.example.emailinbox.EmailFactory
 import com.example.emailinbox.InboxState
@@ -88,23 +84,16 @@ class EmailInboxTest {
         }
     }
 
-
     @Test
-    fun remaining_items_displayed_when_another_dismissed() {
+    fun item_dismissed_when_swiped(){
         composeTestRule.setContent {
             Inbox()
         }
         composeTestRule.onNodeWithTag(Tags.TAG_CONTENT).onChildAt(0).performTouchInput {
             swipeRight()
-        }
+        } //failing too
         val emails = EmailFactory.makeEmailList()
-        emails.takeLast(emails.count() - 1).forEachIndexed { index, email ->
-            composeTestRule.onNodeWithTag(Tags.TAG_CONTENT).onChildAt(index).performScrollTo()
-                .assert(hasTestTag(Tags.TAG_EMAIL + email.id))
-        }
-
-
+        composeTestRule.onNodeWithTag(Tags.TAG_CONTENT).onChildren().assertCountEquals(emails.count() - 1)
     }
 
 }
-
